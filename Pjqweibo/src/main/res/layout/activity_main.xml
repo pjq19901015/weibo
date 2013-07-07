@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+        <include layout="@layout/home"/>
+        <include layout="@layout/message"/>
+        <include layout="@layout/selfinfo"/>
+        <include layout="@layout/square"/>
+        <include layout="@layout/more"/>
+    </FrameLayout>
+    <LinearLayout
+            android:id="@+id/main_linearlayout_tabbar"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal">
+    </LinearLayout>
+</LinearLayout>
