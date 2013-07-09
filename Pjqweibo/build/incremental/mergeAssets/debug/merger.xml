@@ -2,10 +2,10 @@
 <merger>
 
     <dataSet config="main" >
-        <source path="C:\Users\asus\AndroidStudioProjects\Pjqweibo\Pjqweibo\src\main\assets" />
+        <source path="D:\weibo\Pjqweibo\src\main\assets" />
     </dataSet>
     <dataSet config="debug" >
-        <source path="C:\Users\asus\AndroidStudioProjects\Pjqweibo\Pjqweibo\src\debug\assets" />
+        <source path="D:\weibo\Pjqweibo\src\debug\assets" />
     </dataSet>
 
 </merger>

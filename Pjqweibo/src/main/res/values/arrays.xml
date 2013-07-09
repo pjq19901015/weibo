@@ -3,16 +3,16 @@
     <string-array name="tabbar_btn_text">
         <item>首页</item>
         <item>信息</item>
-        <item>我的资料</item>
+        <item>资料</item>
         <item>广场</item>
         <item>更多</item>
     </string-array>
     <array name="tabbar_btn_image_resource">
-        <item>@drawable/brief_unfocus</item>
-        <item>@drawable/schedule_unfocus</item>
-        <item>@drawable/news_unfocus</item>
-        <item>@drawable/message_unfocus</item>
-        <item>@drawable/qrcode_unfocus</item>
+        <item>@drawable/tab_home_unfocus</item>
+        <item>@drawable/tab_meassage_unfocus</item>
+        <item>@drawable/tab_selfinfo_unfocus</item>
+        <item>@drawable/tab_square_unfocus</item>
+        <item>@drawable/tab_more_unfocus</item>
     </array>
     <array name="tabbar_btn_id">
         <item>@+id/home_btn</item>
