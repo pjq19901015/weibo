@@ -15,7 +15,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:cacheColorHint="#00000000"
-        android:dividerHeight="0dp"/>
+                android:dividerHeight="0dp"/>
         <ListView
                 android:id="@+id/home_lvi_comment"
                 android:layout_width="fill_parent"
