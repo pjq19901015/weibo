@@ -1,7 +1,9 @@
 package com.pjq.weibo;
 
 import android.content.res.TypedArray;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
@@ -10,10 +12,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.pjq.adapter.HomeListAdapter;
+import com.pjq.common.KeySecret;
+import com.pjq.common.RequestURL;
 import com.pjq.entity.Status;
 import com.pjq.entity.User;
 import com.pjq.interfaces.ActivityInterface;
+import com.pjq.net.GetData;
 import com.pjq.tools.Tool;
+import com.weibo.sdk.android.Weibo;
+import com.weibo.sdk.android.WeiboParameters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +29,7 @@ public class MainActivity extends BaseActivity implements ActivityInterface{
     private ListView mLviHome;
     private View mView;
     private HomeListAdapter mHomeListAdapter;
+    private LoadHomeDataAsynTask loadHomeDataAsynTask;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +51,6 @@ public class MainActivity extends BaseActivity implements ActivityInterface{
     }
 
     private View loadTabButton(){
-
         LinearLayout linearLayout = (LinearLayout) mView.findViewById(R.id.main_linearlayout_tabbar);
         String[] texts = getResources().getStringArray(R.array.tabbar_btn_text);
         TypedArray images = getResources().obtainTypedArray(R.array.tabbar_btn_image_resource);
@@ -79,10 +86,21 @@ public class MainActivity extends BaseActivity implements ActivityInterface{
                                 8,8,
                                 "fasdf"));
         mHomeListAdapter = new HomeListAdapter(this,statuses);
+        loadHomeDataAsynTask = new LoadHomeDataAsynTask();
     }
 
     @Override
     public void addAction() {
         mLviHome.setAdapter(mHomeListAdapter);
+        loadHomeDataAsynTask.execute();
+    }
+
+    class LoadHomeDataAsynTask extends AsyncTask<Void,Integer,Integer>{
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+            String string = GetData.getInstance().getWeiboListOfHome(KeySecret.CONSUMERKEY) + " ";
+            return null;
+        }
     }
 }

@@ -9,6 +9,7 @@ package com.pjq.common;
  */
 public class RequestURL {
     public static final String WEB_SERVE = "https://api.weibo.com/2/";
-    public static final String GET_LASTED = WEB_SERVE + "statuses/mentions.json";
-
+    public static final String GET_LASTED = WEB_SERVE + "statuses/home_timeline.json";
+    //public static final String REDIRECTURL = "http://www.baidu.com";
+    public static final String REDIRECTURL = "http://180.168.35.37:8080/exhibition369/";
 }
