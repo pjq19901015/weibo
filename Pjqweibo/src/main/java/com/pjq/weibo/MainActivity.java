@@ -3,25 +3,20 @@ package com.pjq.weibo;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
+import com.google.gson.Gson;
 import com.pjq.adapter.HomeListAdapter;
-import com.pjq.common.KeySecret;
-import com.pjq.common.RequestURL;
 import com.pjq.entity.Status;
 import com.pjq.entity.User;
 import com.pjq.interfaces.ActivityInterface;
 import com.pjq.net.GetData;
-import com.pjq.tools.Tool;
-import com.weibo.sdk.android.Weibo;
-import com.weibo.sdk.android.WeiboParameters;
-
+import com.weibo.sdk.android.Oauth2AccessToken;
+import com.weibo.sdk.android.WeiboException;
+import com.weibo.sdk.android.api.StatusesAPI;
+import com.pjq.entity.Status;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,15 +25,17 @@ public class MainActivity extends BaseActivity implements ActivityInterface{
     private View mView;
     private HomeListAdapter mHomeListAdapter;
     private LoadHomeDataAsynTask loadHomeDataAsynTask;
+    private String mStrToken;
+    private Button mBtnShare;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //setContentViewNotitle(loadTabButton(););
-        mView = getLayoutInflater().inflate(R.layout.activity_main,null);
-        setContentView(loadTabButton());
-        Tool.updateFullScreenStatus(this,false);
         findView();
+        loadTabButton();
+        setContentView(mView);
+        //Tool.updateFullScreenStatus(this,false);
         initData();
         addAction();
     }
@@ -50,7 +47,7 @@ public class MainActivity extends BaseActivity implements ActivityInterface{
         return true;
     }
 
-    private View loadTabButton(){
+    private void loadTabButton(){
         LinearLayout linearLayout = (LinearLayout) mView.findViewById(R.id.main_linearlayout_tabbar);
         String[] texts = getResources().getStringArray(R.array.tabbar_btn_text);
         TypedArray images = getResources().obtainTypedArray(R.array.tabbar_btn_image_resource);
@@ -67,12 +64,13 @@ public class MainActivity extends BaseActivity implements ActivityInterface{
                                                                LinearLayout.LayoutParams.FILL_PARENT,
                                                                1));
         }
-        return mView;
     }
 
     @Override
     public void findView() {
+        mView = getLayoutInflater().inflate(R.layout.activity_main,null);
         mLviHome = (ListView) mView.findViewById(R.id.home_lvi);
+        mBtnShare = (Button) mView.findViewById(R.id.home_titlebar_btn_write_weibo);
     }
 
     @Override
@@ -85,6 +83,7 @@ public class MainActivity extends BaseActivity implements ActivityInterface{
                                 new User(11488058246L,"pjq","",null),
                                 8,8,
                                 "fasdf"));
+        mStrToken = getIntent().getStringExtra("accesstoken");
         mHomeListAdapter = new HomeListAdapter(this,statuses);
         loadHomeDataAsynTask = new LoadHomeDataAsynTask();
     }
@@ -93,13 +92,22 @@ public class MainActivity extends BaseActivity implements ActivityInterface{
     public void addAction() {
         mLviHome.setAdapter(mHomeListAdapter);
         loadHomeDataAsynTask.execute();
+
+        mBtnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StatusesAPI statusesAPI = new StatusesAPI(new Oauth2AccessToken(mStrToken));
+                statusesAPI.update("测试微博","","",null);
+            }
+        });
     }
 
     class LoadHomeDataAsynTask extends AsyncTask<Void,Integer,Integer>{
 
         @Override
         protected Integer doInBackground(Void... params) {
-            String string = GetData.getInstance().getWeiboListOfHome(KeySecret.CONSUMERKEY) + " ";
+            String string = GetData.getInstance().getWeiboListOfHome(mStrToken) + " ";
+            com.pjq.entity.Status status = new Gson().fromJson(string, com.pjq.entity.Status.class);
             return null;
         }
     }

@@ -23,10 +23,10 @@ public class GetData {
         }
         return instance;
     }
-    public String getWeiboListOfHome(String source){
+    public String getWeiboListOfHome(String token){
         String string = "";
         Map<String,String> params = new HashMap<String, String>();
-        params.put("source",source);
+        params.put("access_token",token);
         string = HTTPRequest.getRequest(RequestURL.GET_LASTED,params);
         return string;
     }
