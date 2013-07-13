@@ -9,16 +9,21 @@ package com.pjq.entity;
  */
 public class Status {
 
-    private String created_at;
-    private long id;
-    private String text;
-    private String source;
-    private User user;
-    private int  reposts_count;
-    private int  comments_count;
-    private String original_pic;
+    public String created_at;
+    public long id;
+    public String text;
+    public String source;
+    public User user;
+    public int  reposts_count;
+    public int  comments_count;
+    public String original_pic;
 
-    public Status(String created_at, long id, String text, String source, User user, int reposts_count, int comments_count, String original_pic) {
+    public Status() {
+    }
+
+    public Status(String created_at, long id, String text, String source, User user,
+                  int reposts_count, int comments_count, String original_pic) {
+
         this.created_at = created_at;
         this.id = id;
         this.text = text;

@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity implements ActivityInterface{
         List<Status> statuses = new ArrayList<Status>();
         statuses.add(new Status("Tue May 31 17:46:55 +0800 2011",
                                 11488058246L,
-                                "求关注",
+                                "求关中文",
                                 "<a href=\"http://weibo.com\" rel=\"nofollow\">新浪微博</a>",
                                 new User(11488058246L,"pjq","",null),
                                 8,8,
@@ -97,7 +97,7 @@ public class MainActivity extends BaseActivity implements ActivityInterface{
             @Override
             public void onClick(View v) {
                 StatusesAPI statusesAPI = new StatusesAPI(new Oauth2AccessToken(mStrToken));
-                statusesAPI.update("测试微博","","",null);
+                statusesAPI.update("测微博","","",null);
             }
         });
     }
