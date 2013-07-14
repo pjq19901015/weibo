@@ -1,5 +1,7 @@
 package com.pjq.entity;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: pjq
@@ -7,7 +9,7 @@ package com.pjq.entity;
  * Time: 上午11:04
  * To change this template use File | Settings | File Templates.
  */
-public class Status {
+public class Status extends Object implements Serializable {
 
     public String created_at;
     public long id;

@@ -3,6 +3,8 @@ package com.pjq.weibo;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
@@ -13,6 +15,7 @@ import com.pjq.entity.Status;
 import com.pjq.entity.User;
 import com.pjq.interfaces.ActivityInterface;
 import com.pjq.net.GetData;
+import com.pjq.util.JsonAndObject;
 import com.weibo.sdk.android.Oauth2AccessToken;
 import com.weibo.sdk.android.WeiboException;
 import com.weibo.sdk.android.api.StatusesAPI;
@@ -27,6 +30,19 @@ public class MainActivity extends BaseActivity implements ActivityInterface{
     private LoadHomeDataAsynTask loadHomeDataAsynTask;
     private String mStrToken;
     private Button mBtnShare;
+    private List<Status> mStatuses = new ArrayList<Status>();
+    private Handler mHanldler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+                    mHomeListAdapter = new HomeListAdapter(MainActivity.this,mStatuses);
+                    mLviHome.setAdapter(mHomeListAdapter);
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,29 +91,18 @@ public class MainActivity extends BaseActivity implements ActivityInterface{
 
     @Override
     public void initData() {
-        List<Status> statuses = new ArrayList<Status>();
-        statuses.add(new Status("Tue May 31 17:46:55 +0800 2011",
-                                11488058246L,
-                                "求关中文",
-                                "<a href=\"http://weibo.com\" rel=\"nofollow\">新浪微博</a>",
-                                new User(11488058246L,"pjq","",null),
-                                8,8,
-                                "fasdf"));
         mStrToken = getIntent().getStringExtra("accesstoken");
-        mHomeListAdapter = new HomeListAdapter(this,statuses);
         loadHomeDataAsynTask = new LoadHomeDataAsynTask();
     }
 
     @Override
     public void addAction() {
-        mLviHome.setAdapter(mHomeListAdapter);
         loadHomeDataAsynTask.execute();
-
         mBtnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StatusesAPI statusesAPI = new StatusesAPI(new Oauth2AccessToken(mStrToken));
-                statusesAPI.update("测微博","","",null);
+                //statusesAPI.update("测微博","","",null);
             }
         });
     }
@@ -107,7 +112,10 @@ public class MainActivity extends BaseActivity implements ActivityInterface{
         @Override
         protected Integer doInBackground(Void... params) {
             String string = GetData.getInstance().getWeiboListOfHome(mStrToken) + " ";
-            com.pjq.entity.Status status = new Gson().fromJson(string, com.pjq.entity.Status.class);
+            mStatuses = JsonAndObject.convert(com.pjq.entity.Status.class,string,"statuses");
+            Message message = mHanldler.obtainMessage();
+            message.what = 1;
+            mHanldler.sendMessage(message);
             return null;
         }
     }

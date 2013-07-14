@@ -8,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.pjq.entity.Status;
+import com.pjq.entity.User;
+import com.pjq.util.DateFormat;
+import com.pjq.util.ImageURLUtil;
 import com.pjq.weibo.R;
 
 import java.util.Date;
@@ -24,7 +27,7 @@ public class HomeListAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
     private List<Status>  mStatus;
-
+    private User mUser;
     public HomeListAdapter(Context context, List<Status> status) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
@@ -57,12 +60,20 @@ public class HomeListAdapter extends BaseAdapter {
         }else{
             holderView = (HolderView) convertView.getTag();
         }
-        holderView.mTxvName.setText(mStatus.get(position).getUser().getName());
+        mUser = mStatus.get(position).getUser();
+        if(mUser != null){
+            holderView.mTxvName.setText(mStatus.get(position).getUser().getName());
+
+        }
+
         holderView.mTxvRedirect.setText(String.valueOf(mStatus.get(position).getReposts_count()));
         holderView.mTxvContent.setText(mStatus.get(position).getText());
-        holderView.mTxvTime.setText(new Date(mStatus.get(position).getCreated_at()).toString());
+        holderView.mTxvTime.setText(
+                DateFormat.getDateTimeByMillisecond(mStatus.get(position).getCreated_at()));
         holderView.mTxvFrom.setText(mStatus.get(position).getSource());
         holderView.mTxvComments.setText(String.valueOf(mStatus.get(position).getComments_count()));
+        ImageURLUtil.loadImage(mStatus.get(position).original_pic,
+                               holderView.mImgviewContent);
         return convertView;
     }
 

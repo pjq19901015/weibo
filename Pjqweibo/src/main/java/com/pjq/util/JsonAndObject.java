@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +37,7 @@ public class JsonAndObject {
                 JSONObject jsonObject = new JSONObject(json);
                 String strJson = jsonObject.get(propertyName).toString();
                 JSONArray jsonArray = new JSONArray(strJson);
+                objs = new ArrayList();
                 for(int i = 0; i < jsonArray.length(); i++){
                     Object obj = c.newInstance();
                     convertSignleObject(obj,jsonArray.getString(i));
@@ -75,10 +77,10 @@ public class JsonAndObject {
                         field.set(obj,Long.valueOf(String.valueOf(value)));
                     }else if(boolean.class == field.getType()){
                         field.set(obj,Boolean.valueOf(String.valueOf(value)));
-                    }else if(Object.class == field.getType()){
+                    }else {
                         Object fieldObj = field.getType().newInstance();
                         convertSignleObject(fieldObj,String.valueOf(value));
-                        field.set(obj,value);
+                        field.set(obj,fieldObj);
                     }
                 }
             } catch (JSONException e) {
